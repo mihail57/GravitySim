@@ -93,17 +93,6 @@ namespace GravitySim
             return result;
         }
 
-        public static void CalculatePos(Vector acceleration, int timePerTick, ref double[] coords, ref Vector speed)
-        {
-            double res = acceleration.modulus * timePerTick * timePerTick / 2;
-            double x = (res * Math.Sin(acceleration.angle) + speed.modulus * Math.Sin(speed.angle) * timePerTick) / scale; //X axis
-            double y = (res * Math.Cos(acceleration.angle) + speed.modulus * Math.Cos(speed.angle) * timePerTick) / scale; //Y axis
-            coords[0] += x; 
-            coords[1] += y; 
-            Vector speedFromAcc = new Vector(acceleration.modulus * timePerTick, acceleration.angle);
-            speed = Vector.Sum(speed, speedFromAcc);
-        }
-
         public static List<PointF> AddPoint(PointF coords, List<PointF> list)
         {
             for (int i = 0; i < 3; i++)
@@ -159,21 +148,6 @@ namespace GravitySim
 
             if (drawAcc && body.id != 0) DrawVector(body.acceleration, body.visualCoords, g, Color.Gray, ref point);
             if (drawVector && body.id != 0) DrawVector(body.speed, body.visualCoords, g, Color.Black, ref point);
-        }
-
-        public static Vector Gravity(Body body1, Body body2)
-        {
-            double prX = (body2.coords[0] - body1.coords[0]) * scale;
-            double prY = (body2.coords[1] - body1.coords[1]) * scale;
-            double distance = Math.Sqrt(prX * prX + prY * prY);
-            double modulus = gravityConst * body1.mass * body2.mass / (distance * distance + eps * eps);
-
-            double sumAngle = Math.Asin(prX / distance);
-            if (prY < 0 && prX < 0) sumAngle = -Math.Acos(prY / distance) + 2 * Math.PI;
-            else if (prY < 0 && prX > 0) sumAngle = Math.Acos(prY / distance);
-            else if (prX < 0 && prY > 0) sumAngle = Math.Asin(prX / distance);
-
-            return new Vector(modulus, sumAngle);
         }
 
         public static int LocateClick(float x, float y, List<Body> bodies)
