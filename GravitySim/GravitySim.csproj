@@ -136,9 +136,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CliLib\CliLib\CliLib.vcxproj">
-      <Project>{29c93f7a-33f1-404a-8c9e-b6699597e248}</Project>
-      <Name>CliLib</Name>
+    <ProjectReference Include="..\CppLib\CppLib.vcxproj">
+      <Project>{0c826cb8-b2fd-46d9-924a-9a279ecf191a}</Project>
+      <Name>CppLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

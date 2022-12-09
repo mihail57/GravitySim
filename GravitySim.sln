@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31605.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GravitySim", "GravitySim\GravitySim.csproj", "{F387FD8D-0322-4B88-8963-9F60E9616E2F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CliLib", "..\CliLib\CliLib\CliLib.vcxproj", "{29C93F7A-33F1-404A-8C9E-B6699597E248}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CppLib", "CppLib\CppLib.vcxproj", "{0C826CB8-B2FD-46D9-924A-9A279ECF191A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,16 +29,16 @@ Global
 		{F387FD8D-0322-4B88-8963-9F60E9616E2F}.Release|x64.Build.0 = Release|Any CPU
 		{F387FD8D-0322-4B88-8963-9F60E9616E2F}.Release|x86.ActiveCfg = Release|x86
 		{F387FD8D-0322-4B88-8963-9F60E9616E2F}.Release|x86.Build.0 = Release|x86
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Debug|x64.ActiveCfg = Debug|x64
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Debug|x64.Build.0 = Debug|x64
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Debug|x86.ActiveCfg = Debug|Win32
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Debug|x86.Build.0 = Debug|Win32
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Release|Any CPU.ActiveCfg = Release|Win32
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Release|x64.ActiveCfg = Release|x64
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Release|x64.Build.0 = Release|x64
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Release|x86.ActiveCfg = Release|Win32
-		{29C93F7A-33F1-404A-8C9E-B6699597E248}.Release|x86.Build.0 = Release|Win32
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Debug|x64.ActiveCfg = Debug|x64
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Debug|x64.Build.0 = Debug|x64
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Debug|x86.ActiveCfg = Debug|Win32
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Debug|x86.Build.0 = Debug|Win32
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Release|Any CPU.ActiveCfg = Release|Win32
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Release|x64.ActiveCfg = Release|x64
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Release|x64.Build.0 = Release|x64
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Release|x86.ActiveCfg = Release|Win32
+		{0C826CB8-B2FD-46D9-924A-9A279ECF191A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

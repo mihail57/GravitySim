@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
-using CliLib;
+using CppLib;
 
 namespace GravitySim
 {
