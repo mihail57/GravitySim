@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Windows.Forms;
+using CliLib;
 
 namespace GravitySim
 {
@@ -115,9 +116,6 @@ namespace GravitySim
 
         public static double[] RecalculateZeroPos(Body zero, double scale, float xMove, float yMove, int xMouse, int yMouse, bool scroll, bool locked, double[] lockPoint = null)
         {
-            zero.visualCoords[0] += xMove;
-            zero.visualCoords[1] += yMove;
-
             if (scroll)
             {
                 if (!locked)
@@ -135,6 +133,9 @@ namespace GravitySim
                     zero.visualCoords[1] -= lockPoint[1] * ((float)scale - 1);
                 }
             }
+
+            zero.visualCoords[0] += xMove;
+            zero.visualCoords[1] += yMove;
 
             return new double[2] { zero.visualCoords[0], zero.visualCoords[1] };
         }
@@ -156,8 +157,8 @@ namespace GravitySim
 
             g.DrawBeziers(new Pen(body.color, 1), tr);
 
-            if (drawAcc && body.id != 0) Vector.DrawVector(body.acceleration, body.visualCoords, g, Color.Gray, ref point);
-            if (drawVector && body.id != 0) Vector.DrawVector(body.speed, body.visualCoords, g, Color.Black, ref point);
+            if (drawAcc && body.id != 0) DrawVector(body.acceleration, body.visualCoords, g, Color.Gray, ref point);
+            if (drawVector && body.id != 0) DrawVector(body.speed, body.visualCoords, g, Color.Black, ref point);
         }
 
         public static Vector Gravity(Body body1, Body body2)
@@ -181,76 +182,11 @@ namespace GravitySim
             for (int i = 1; i < bodies.Count; i++) if (x >= bodies[i].visualCoords[0] - 2 && x < bodies[i].visualCoords[0] + 5 && y >= bodies[i].visualCoords[1] - 2 && y < bodies[i].visualCoords[1] + 5) result = i;
             return result;
         }
-    }
-
-    public struct Vector
-    {
-        public Vector(double a, double b)
-        {
-            this.modulus = a;
-            this.angle = b;
-        }
-        public double modulus;
-        public double angle;
-
-        public static Vector Sum(Vector v1, Vector v2)
-        {
-            double projectionX = v1.modulus * Math.Sin(v1.angle) + v2.modulus * Math.Sin(v2.angle);
-            double projectionY = v1.modulus * Math.Cos(v1.angle) + v2.modulus * Math.Cos(v2.angle);
-            double sumModulus = Math.Sqrt(projectionX * projectionX + projectionY * projectionY);
-            if (projectionX == 0 && projectionY == 0) return new Vector(0, 0);
-            double sumAngle = Math.Asin(projectionX / sumModulus);
-            if (projectionY < 0 && projectionX < 0) sumAngle = -Math.Acos(projectionY / sumModulus) + 2 * Math.PI; 
-            else if (projectionY < 0 && projectionX > 0) sumAngle = Math.Acos(projectionY / sumModulus);
-            else if (projectionX < 0 && projectionY > 0) sumAngle = Math.Asin(projectionX / sumModulus);
-            return new Vector(sumModulus, sumAngle);
-        }
-
-        public static Vector Sum(List<Vector> vectors)
-        {
-            double sumModulus = vectors[0].modulus;
-            double sumAngle = vectors[0].angle;
-            for (int i = 1; i < vectors.Count; i++)
-            {
-                double projectionX = sumModulus * Math.Sin(sumAngle) + vectors[i].modulus * Math.Sin(vectors[i].angle);
-                double projectionY = sumModulus * Math.Cos(sumAngle) + vectors[i].modulus * Math.Cos(vectors[i].angle);
-                sumModulus = Math.Sqrt(projectionX * projectionX + projectionY * projectionY);
-                if (projectionX == 0 && projectionY == 0) { sumModulus = 0; sumAngle = 0; }
-                sumAngle = Math.Asin(projectionX / sumModulus);
-                if (projectionY < 0 && projectionX < 0) sumAngle = -Math.Acos(projectionY / sumModulus) + 2 * Math.PI;
-                else if (projectionY < 0 && projectionX > 0) sumAngle = Math.Acos(projectionY / sumModulus);
-                else if (projectionX < 0 && projectionY > 0) sumAngle = Math.Asin(projectionX / sumModulus);
-            }
-            return new Vector(sumModulus, sumAngle);
-        }
-
-        public static Vector NegativeVector(Vector v)
-        {
-            return new Vector(v.modulus, Math.PI + v.angle);
-        }
 
         public static void DrawVector(Vector vector, double[] position, Graphics g, Color col, ref PointF point)
         {
             point = new PointF((float)(20 * Math.Sin(vector.angle) + position[0] + 1), (float)(20 * Math.Cos(vector.angle) + position[1] + 1));
             g.DrawLine(new Pen(col, 1), new PointF((float)position[0] + 1, (float)position[1] + 1), point);
-        }
-
-        public static Vector ChangeAngle(Vector vector, PointF newPos, double[] bodyPoint)
-        {
-
-            double b = Math.Abs(newPos.X - bodyPoint[0]);
-            double a = Math.Sqrt(Math.Pow(newPos.X - bodyPoint[0], 2) + Math.Pow(newPos.Y - bodyPoint[1], 2));
-            double r = b / a;
-
-            double newAngle = -Math.Acos(r) + Math.PI/2;
-            if (newPos.Y - bodyPoint[1] <= 0 && newPos.X - bodyPoint[0] <= 0) newAngle = -Math.Acos(r) - Math.PI / 2;
-            else if (newPos.Y - bodyPoint[1] <= 0 && newPos.X - bodyPoint[0] >= 0) newAngle = Math.Acos(r) + Math.PI / 2;
-            else if (newPos.X - bodyPoint[0] <= 0 && newPos.Y - bodyPoint[1] >= 0) newAngle = Math.Acos(r) - Math.PI / 2;
-
-
-            if (a == 0) return vector;
-
-            return new Vector(vector.modulus, newAngle);
         }
     }
 

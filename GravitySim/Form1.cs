@@ -11,6 +11,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Encodings.Web;
+using CliLib;
 
 namespace GravitySim
 {
@@ -56,11 +57,11 @@ namespace GravitySim
                     b.forces.Clear();
                 }
                 
-                for (int a = 1; a < bodies.Count; a++)
+                for (int a = 1; a < bodies.Count - 1; a++)
                 {
                     for (int j = a + 1; j < bodies.Count; j++)
                     {
-                        Vector res = Body.Gravity(bodies[a], bodies[j]);
+                        Vector res = Vector.Gravity(bodies[a].coords, bodies[a].mass, bodies[j].coords, bodies[j].mass, Body.scale, Body.gravityConst, Body.eps);
                         bodies[a].forces.Add(res);
                         bodies[j].forces.Add(Vector.NegativeVector(res));
                     }
@@ -71,11 +72,13 @@ namespace GravitySim
                 {
                     if (b.id != 0)
                     {
-                        b.acceleration = Vector.Sum(b.forces);
+                        b.acceleration = b.forces[0];
+                        for (int j = 1; j < b.forces.Count; j++) 
+                            b.acceleration = Vector.Sum(b.acceleration, b.forces[j]);
                         b.acceleration.modulus /= b.mass;
+                        b.speed = Vector.CalculateSpeed(b.acceleration, b.speed, timePerCalc);
+                        b.coords = Vector.CalculatePos(b.acceleration, timePerCalc, b.coords, b.speed, Body.scale);
                     }
-
-                    Body.CalculatePos(b.acceleration, timePerCalc, ref b.coords, ref b.speed);
                 }
             }
 
@@ -158,11 +161,11 @@ namespace GravitySim
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            Graphics g = CreateGraphics();
+            Graphics g = e.Graphics;
 
             if (rotate)
             {
-                bodies[clickedBody].speed = Vector.ChangeAngle(bodies[clickedBody].speed, newPoint, bodies[clickedBody].visualCoords);
+                bodies[clickedBody].speed = Vector.ChangeAngle(bodies[clickedBody].speed, newPoint.X, newPoint.Y, bodies[clickedBody].visualCoords);
                 label14.Text = "Угол: " + bodies[clickedBody].speed.angle / Math.PI * 180;
             }
 
@@ -395,7 +398,11 @@ namespace GravitySim
             {
                 createNewBody = false;
             }
-            panel1.Visible = true;
+            else
+            {
+                bodies[clickedBody] = new Body(oldVersion);
+                panel1.Visible = true;
+            }
             if (bodies.Count > 2) button2.Enabled = true;
 
             textBox1.Text = "";
@@ -403,9 +410,6 @@ namespace GravitySim
             textBox3.Text = "";
             textBox4.Text = "";
             textBox5.Text = "";
-
-            bodies[clickedBody] = new Body(oldVersion);
-
 
             Invalidate();
         }
