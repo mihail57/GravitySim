@@ -368,11 +368,11 @@ namespace GravitySim
                 bodies[clickedBody].color = pictureBox2.BackColor;
                 bodies[clickedBody].speed.modulus = Convert.ToDouble(textBox5.Text);
 
-                bodies[index] = bodies[clickedBody];
+                //bodies[index] = bodies[clickedBody];
             }
             else
             {
-                bodies.Add(new Body(textBox1.Text, Convert.ToDouble(textBox2.Text), Convert.ToDouble(textBox3.Text), Convert.ToDouble(textBox4.Text) / Math.Pow(10, 11), new Vector(Convert.ToDouble(textBox5.Text) / Math.Pow(10, 11), 0), pictureBox2.BackColor, idGen++));
+                bodies.Add(new Body(textBox1.Text, Convert.ToDouble(textBox2.Text), Convert.ToDouble(textBox3.Text), Convert.ToDouble(textBox4.Text) / Math.Pow(10, 11), new Vector(Convert.ToDouble(textBox5.Text), 0), pictureBox2.BackColor, idGen++));
                 bodies[bodies.Count - 1].visualCoords = Body.CalculateVisualCoords(bodies[0], bodies[bodies.Count - 1].visualCoords, scale);
                 clickedBody = bodies.Count - 1;
             }
